@@ -23,7 +23,7 @@ obj_dir/Vcpu: hardware/*.v simulator/main.cpp
 lib/riscv.o: lib/riscv.h
 
 %.o: %.c
-	$(RVGCC)gcc -Os -fno-pic -march=$(RVARCH) -mabi=$(RVABI) -fno-stack-protector -w -Wl,--no-relax -c $< -o $@
+	$(RVGCC)g++ -Os -fno-pic -march=$(RVARCH) -mabi=$(RVABI) -fno-stack-protector -w -Wl,--no-relax -c $< -o $@
 
 %.o: %.S
 	$(RVGCC)as -march=$(RVARCH) -mabi=$(RVABI) $^ -o $@
@@ -32,8 +32,8 @@ lib/libriscv.a: lib/riscv.o
 	$(RVGCC)ar rcs lib/libriscv.a lib/riscv.o
 	$(RVGCC)ranlib lib/libriscv.a
 
-program/main.elf: program/main.c lib/libriscv.a lib/crtrv.o lib/$(RVLDSCRIPT)
-	$(RVGCC)gcc -O3 -g -Ilib -fno-pic -march=$(RVARCH) -mabi=$(RVABI) -fno-stack-protector -w -Wl,--no-relax -c program/main.c -o program/main.o
+program/main.elf: program/main.cpp lib/libriscv.a lib/crtrv.o lib/$(RVLDSCRIPT)
+	$(RVGCC)g++ -O3 -g -Ilib -fno-pic -march=$(RVARCH) -mabi=$(RVABI) -fno-stack-protector -w -Wl,--no-relax -c program/main.cpp -o program/main.o
 	$(RVGCC)ld -m elf32lriscv -b elf32-littleriscv --no-relax --print-memory-usage -Tlib/$(RVLDSCRIPT) \
 		program/main.o -o program/main.elf -Llib -lriscv \
 		-L$(RVLIBPATH) -lsupc++ -lc -lm \

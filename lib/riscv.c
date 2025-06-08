@@ -124,6 +124,10 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <errno.h>
 #include <unistd.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define UNIMPL_FUNC(_f) ".globl " #_f "\n.type " #_f ", @function\n" #_f ":\n"
 
 // clang-format off
@@ -173,8 +177,6 @@ ssize_t _read(int file, void *ptr, size_t len)
     return 0;
 }
 
-extern int putchar(int c);
-
 ssize_t _write(int file, const void *ptr, size_t len)
 {
     if (file == 1)
@@ -218,3 +220,6 @@ void _exit(int exit_status)
     __builtin_unreachable();
 }
 
+#ifdef __cplusplus
+}
+#endif
