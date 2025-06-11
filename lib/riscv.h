@@ -2,6 +2,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int printf(const char *fmt, ...);
 int puts(const char *s);
 int putchar(int c);
@@ -17,3 +21,7 @@ uint64_t getcycles(void);
 
 #define IO_OUT(port, value) (*(volatile uint32_t *)(port)) = (value)
 #define IO_IN(port) (*(volatile uint32_t *)(port))
+
+#ifdef __cplusplus
+}
+#endif

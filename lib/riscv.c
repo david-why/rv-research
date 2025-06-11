@@ -98,7 +98,7 @@ uint64_t getcycles(void)
 }
 
 /*
-The following is adapted from Clifford Wolf's syscalls.c in the picov32
+The following is adapted from Clifford Wolf's syscalls.c in the picorv32
 repository. The original license information is provided below.
 
 ISC License
@@ -203,8 +203,6 @@ void *_sbrk(ptrdiff_t incr)
 {
     extern unsigned char _end[]; // Defined by linker
     static unsigned long heap_end = 0;
-
-    printf("SBRK %d\n", (int)incr);
 
     if (heap_end == 0)
         heap_end = (long)_end;

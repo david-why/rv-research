@@ -33,7 +33,7 @@ lib/libriscv.a: lib/riscv.o
 	$(RVGCC)ranlib lib/libriscv.a
 
 program/main.elf: program/main.cpp lib/libriscv.a lib/crtrv.o lib/$(RVLDSCRIPT)
-	$(RVGCC)g++ -O3 -g -Ilib -fno-pic -march=$(RVARCH) -mabi=$(RVABI) -fno-stack-protector -w -Wl,--no-relax -c program/main.cpp -o program/main.o
+	$(RVGCC)g++ -Ithird_party/eigen -O2 -g -Ilib -fno-pic -march=$(RVARCH) -mabi=$(RVABI) -fno-stack-protector -w -Wl,--no-relax -c program/main.cpp -o program/main.o
 	$(RVGCC)ld -m elf32lriscv -b elf32-littleriscv --no-relax --print-memory-usage -Tlib/$(RVLDSCRIPT) \
 		program/main.o -o program/main.elf -Llib -lriscv \
 		-L$(RVLIBPATH) -lsupc++ -lc -lm \

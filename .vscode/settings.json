@@ -4,6 +4,10 @@
         "typeinfo": "cpp",
         "riscv.h": "c",
         "stdint.h": "c",
-        "stat.h": "c"
+        "stat.h": "c",
+        "dense": "cpp",
+        "cholesky": "cpp",
+        "eigenvalues": "cpp",
+        "stdarg.h": "c"
     }
 }
