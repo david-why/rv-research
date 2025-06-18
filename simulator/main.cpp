@@ -4,10 +4,12 @@
 
 #define RAM_START 0x00000000
 #define ROM_START 0x00800000
+#define ACC_START 0x00600000
 
 #define IO_BASE 0x01000000
 #define IO_UART0 (IO_BASE + 0x1000)
 #define IO_EXIT (IO_BASE + 0x2000)
+#define IO_MEMREADS (IO_BASE + 0x3000)
 
 uint8_t mem[0x2000000];
 
@@ -45,6 +47,8 @@ int main(int argc, char **argv, char **env)
     step();
     top->resetn = 1; // Release reset
     step();
+
+    uint32_t *ramreads = (uint32_t *)(mem + IO_MEMREADS);
 
     for (int i = 0; i < 200000000; i++)
     {
@@ -92,6 +96,10 @@ int main(int argc, char **argv, char **env)
                 // Read data
                 uint32_t data = *(uint32_t *)(mem + top->mem_addr);
                 top->mem_rdata = data;
+                if (top->mem_addr >= RAM_START && top->mem_addr < ROM_START)
+                {
+                    (*ramreads)++;
+                }
                 // printf("Read data from 0x%08x: 0x%08x\n", addr, data);
             }
             top->mem_ready = 1;

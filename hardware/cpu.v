@@ -1,6 +1,11 @@
 `include "picorv32.v"
+`include "accelerator.v"
 
-module cpu(
+module cpu #(
+    parameter MM_DATA_WIDTH = 32,
+    parameter MM_CHUNK_WIDTH = 8,
+    parameter MM_CHUNK_HEIGHT = 8
+) (
 	input clk, resetn,
 	output trap,
 
@@ -13,6 +18,20 @@ module cpu(
 	output reg [ 3:0] mem_wstrb,
 	input      [31:0] mem_rdata
 );
+
+    reg [MM_DATA_WIDTH-1:0] row_a [0:MM_CHUNK_WIDTH-1];
+    reg [MM_DATA_WIDTH-1:0] matrix_b [0:MM_CHUNK_WIDTH-1][0:MM_CHUNK_HEIGHT-1];
+    reg [MM_DATA_WIDTH*2-1:0] row_c [0:MM_CHUNK_WIDTH-1];
+
+    matmul_accelerator #(
+        .DATA_WIDTH(MM_DATA_WIDTH),
+        .CHUNK_WIDTH(MM_CHUNK_WIDTH),
+        .CHUNK_HEIGHT(MM_CHUNK_HEIGHT)
+    ) acc (
+        .row_a(row_a),
+        .matrix_b(matrix_b),
+        .row_c(row_c)
+    );
 
     // Instantiate the PicoRV32 core
     picorv32 #(

@@ -18,6 +18,7 @@ uint64_t getcycles(void);
 #define IO_BASE   0x01000000
 #define IO_UART0 (IO_BASE + 0x1000)
 #define IO_EXIT  (IO_BASE + 0x2000)
+#define IO_MEMREADS (IO_BASE + 0x3000)
 
 #define IO_OUT(port, value) (*(volatile uint32_t *)(port)) = (value)
 #define IO_IN(port) (*(volatile uint32_t *)(port))
